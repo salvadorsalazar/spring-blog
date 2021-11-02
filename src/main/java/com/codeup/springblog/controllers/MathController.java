@@ -16,10 +16,10 @@ public class MathController {
 }
 
 
-    @GetMapping("/subtract/{num1}/from/{num2}")
+    @GetMapping("/subtract/{num1}/and/{num2}")
     @ResponseBody
-    public int subtrac(@PathVariable int num1, @PathVariable int num2) {
-        return num2 - num1;
+    public int subtract(@PathVariable int num1, @PathVariable int num2) {
+        return num1 - num2;
     }
 
     @GetMapping("/multiply/{num1}/and/{num2}")

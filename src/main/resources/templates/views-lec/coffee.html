@@ -9,15 +9,13 @@
 
 
 <h1>Welcome to the coffee page! test </h1>
-<div th:if="${roast}">
-    <h2 th:if="${roast}">
-            <p>You has now  selected <span th:text="${roast}"></span> roast!</p>
-        </h2>
-    <p> we have an amaing <span th:text="${selection.roast}"></span>roast from<span th:text="${selection.origin}"></span></p>
-
-
+<div th:if="${selections}">
+    <h2>You selected <span th:text="${roast}"></span> roast!</h2>
+    <p>Here are some options for you:</p>
+    <ul>
+        <li th:each="selection : ${selections}"><p><span th:text="${selection.brand}"></span> <span th:text="${selection.origin}"></span> <span th:text="${selection.roast}"></span> roast</p></li>
+    </ul>
 </div>
-
 <h2>Select your favored roast:</h2>
 <ul>
     <li><a href="/coffee/dark">Dark Roast</a></li>
