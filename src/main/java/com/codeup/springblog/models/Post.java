@@ -1,13 +1,49 @@
 package com.codeup.springblog.models;
-
-
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "posts")
 public class Post {
-    public Post() {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
+    private String body;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "post")
+    private List<PostImage> images;
+
+    @ManyToOne
+    @JoinColumn(name = "users_id")
+    private User users;
+
+    public User getUsers() {
+        return users;
+    }
+
+    public void setUsers(User users) {
+        this.users = users;
+    }
+
+
+    public Post() {
+    }
+
+    public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
+    public Post(String title, String body, List<PostImage> images) {
+        this.title = title;
+        this.body = body;
+        this.images = images;
     }
 
     public long getId() {
@@ -26,30 +62,19 @@ public class Post {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getBody() {
+        return body;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setBody(String body) {
+        this.body = body;
     }
 
-    public Post(long id, String title, String description) {
-        this.id = id;
-        this.title = title;
-        this.description = description;
+    public List<PostImage> getImages() {
+        return images;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(columnDefinition = "int(11) unsigned")
-    private long id;
-
-    @Column(nullable = false, unique = true)
-    private String title;
-
-    @Column(columnDefinition = "TEXT NOT NULL")
-    private String description;
-
-
+    public void setImages(List<PostImage> images) {
+        this.images = images;
+    }
 }
