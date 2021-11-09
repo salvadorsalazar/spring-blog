@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/partials/partials :: head"></head>
+<style th:replace="/partials/partials :: style"></style>
+<body>
+<nav th:replace="/partials/partials :: navbar"></nav>
+
+<div class="container">
+    <div clas="row">
+        <div class="col-8">
+            <h3 th:text="${post.title}"></h3>
+            <br>
+            <p th:text="${post.body}"></p>
+            <br>
+            <hr>
+            Created By: <p th:text="${user.username}">
+        </div>
+        <div>
+            <form th:action="@{/posts/{id}/edit(id=${post.ID})}" th:value="${post.ID}" method="post">
+                <button type="button" class="btn btn-success"><a th:href="@{/posts/{id}/edit(id=${post.ID})}">Edit</a></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div th:replace="partials/partials :: footer"></div>
+
+</html>

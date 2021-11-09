@@ -17,6 +17,20 @@ public class Ad {
     @Column(columnDefinition = "TEXT NOT NULL")
     private String description;
 
+
+    @ManyToOne
+    @JoinColumn(name="owner_id")
+    private User owner;
+
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
+
     public Ad() {
     }
 

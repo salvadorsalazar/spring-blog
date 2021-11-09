@@ -4,8 +4,10 @@ package com.codeup.springblog.controllers;
 
 import com.codeup.springblog.models.Post;
 import com.codeup.springblog.models.PostImage;
+import com.codeup.springblog.models.User;
 import com.codeup.springblog.repositories.PostRepository;
 import com.codeup.springblog.repositories.UserRepository;
+import com.codeup.springblog.services.EmailService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,12 @@ public class PostController {
 
     private PostRepository postsDao;
     private final UserRepository userDao;
+    private final EmailService emailService;
 
-    public PostController(PostRepository postsDao, UserRepository userDao) {
+    public PostController(PostRepository postsDao, UserRepository userDao, EmailService emailService) {
         this.postsDao = postsDao;
         this.userDao = userDao;
+        this.emailService = emailService;
     }
 
     @GetMapping("/posts")
@@ -44,15 +48,16 @@ public class PostController {
     }
 
     @GetMapping("/posts/create")
-    public String create() {
+    public String create(Model model ) {
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
     @PostMapping("/posts/create")
-    public String insert(@RequestParam String title, @RequestParam String body, @RequestParam List<String> urls) {
+    public String insert(@ModelAttribute Post post, @RequestParam List<String> urls) {
         List<PostImage> images = new ArrayList<>();
-
-        Post post = new Post(title, body);
+        User author = userDao.getById(1L);
+//        Post post = new Post(title, body,author);
 
         // create list of post image objects to pass to the new post constructor
         for (String url : urls) {
@@ -64,9 +69,10 @@ public class PostController {
         post.setImages(images);
 
         // save a post object with images
-
+ post.setUser(author);
 
         postsDao.save(post);
+        emailService.prepareAndSend(post,"you subniite" + post.getTitle(),post.getBody());
 
         // modify the post index view to display post images
         return "redirect:/posts";
@@ -86,15 +92,15 @@ public class PostController {
     }
 
     @PostMapping("/posts/{id}/edit")
-    public String updatePost(@PathVariable long id, @RequestParam(name="title") String title, @RequestParam String body) {
+    public String updatePost(@ModelAttribute Post post) {
         // use the new form inputs to update the existing post in the DB
         // pull the existing post object from the database
-        Post post = postsDao.getById(id);
+        Post editedPost = postsDao.getById(post.getId());
         // set the title and body to the request param values
-        post.setTitle(title);
-        post.setBody(body);
+        editedPost.setTitle(post.getTitle());
+        editedPost.setBody(post.getBody());
         // persist the change in the db with the postsDao
-        postsDao.save(post); // works to both update existing posts and insert new posts
+        postsDao.save(editedPost); // works to both update existing posts and insert new posts
         return "redirect:/posts";
     }
 

@@ -21,21 +21,33 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "users_id")
-    private User users;
+    private User user;
 
-    public User getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void setUsers(User users) {
-        this.users = users;
+    public void setUser(User user) {
+        this.user = user;
     }
 
 
     public Post() {
     }
 
+    public Post(String title, String body, User user) {
+        this.title = title;
+        this.body = body;
+        this.user = user;
+    }
+
     public Post(String title, String body) {
+        this.title = title;
+        this.body = body;
+    }
+
+    public Post(long id, String title, String body) {
+        this.id = id;
         this.title = title;
         this.body = body;
     }
