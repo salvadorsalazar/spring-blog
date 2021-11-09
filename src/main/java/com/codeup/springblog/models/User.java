@@ -8,6 +8,24 @@ import java.util.List;
 public class User {
 
 
+//    added for security
+//@Entity
+//@Table(name = "users")
+//public class User {
+//    /* ... */
+
+    public User(User copy) {
+        id = copy.id; // This line is SUPER important! Many things won't work if it's absent
+        email = copy.email;
+        username = copy.username;
+        password = copy.password;
+    }
+
+
+
+
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,13 +62,13 @@ public class User {
         this.password = password;
     }
 
-    public User(User copy){
-        id = copy.id;
-        email = copy.email;
-        username = copy.username;
-        password = copy.password;
-        posts = copy.posts;
-    }
+//    public User(User copy){
+//        id = copy.id;
+//        email = copy.email;
+//        username = copy.username;
+//        password = copy.password;
+//        posts = copy.posts;
+//    }
 
     public long getId() {
         return id;

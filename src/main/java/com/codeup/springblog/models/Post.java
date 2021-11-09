@@ -20,7 +20,7 @@ public class Post {
     private List<PostImage> images;
 
     @ManyToOne
-    @JoinColumn(name = "users_id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     public User getUser() {
